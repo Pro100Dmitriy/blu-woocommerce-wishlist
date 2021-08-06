@@ -162,5 +162,12 @@ require_once 'blusubscrube/blusubscrube.php';
 
 
 
+/********************  Plugin Blueins Fast View  **************************/
+require_once 'blu_fastview/blu-fast-view.php';
+
+
+
+
+
 /********************  Customizer  **************************/
 require_once 'blu-woo-customizer.php';
