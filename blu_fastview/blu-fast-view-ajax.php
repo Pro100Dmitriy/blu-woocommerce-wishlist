@@ -4,6 +4,7 @@
 function blu_ajax_fastview(){
 
     $data = $_GET;
+    print_r( $data );
 
     $product_id = $data['product_id'];
 
@@ -16,12 +17,12 @@ function blu_ajax_fastview(){
     print_r( $product );
     print_r( $woo_product_variation );
 
-    $product_data = array(
-        'title' => '',
-        'price' => '',
-        'description' => '',
+    // $product_data = array(
+    //     'title' => '',
+    //     'price' => '',
+    //     'description' => '',
 
-    );
+    // );
 
     die();
 }
