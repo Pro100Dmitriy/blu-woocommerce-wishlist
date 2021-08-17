@@ -4,6 +4,8 @@
  * 
  */
 
+const PAGE_URL = global_params.url
+
 
 document.addEventListener( 'DOMContentLoaded', event => {
 // *************************************************************************** DOM Content Loaded
@@ -13,6 +15,25 @@ document.addEventListener( 'DOMContentLoaded', event => {
     let fastview_buttons = document.querySelectorAll( '[data-el="blu_fastview"]' )
     
     if( fastview_buttons ){
+
+        // Add Observe To "Load More" Button in Shop page
+        let product_list_container = document.getElementById('blueins-load_more')
+
+        if( product_list_container != null ){
+            const shopFastviewObserve = new MutationObserver( mutation => {
+                document.querySelectorAll( '[data-el="blu_fastview"]' ).forEach( button => button.addEventListener('click', blu_fastview ) )
+            } )
+
+            shopFastviewObserve.observe(product_list_container,{
+                attributes: true,
+                characterData: true,
+                childList: true,
+                subtree: true,
+                attributeOldValue: true,
+                characterDataOldValue: true
+            })
+        }
+
         fastview_buttons.forEach( button => button.addEventListener( 'click', blu_fastview ) )
     }
 
@@ -30,7 +51,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
         fastviewSendRequest( {
             method: 'GET',
             url,
-            action: 'blu_fastview',
+            action: 'BFV_fastview',
             data: {
                 product_id
             },
@@ -40,9 +61,17 @@ document.addEventListener( 'DOMContentLoaded', event => {
         } )
         .then( resolve => {
             // *************************** Then Block
+            $fastview.element.querySelector('.fastview__container').innerHTML = resolve
             $fastview.show()
-            $fastview.closer.addEventListener( 'click', e => $fastview.hidden() )
-            console.log(resolve)
+            $fastview.element.querySelector('#close-fastview-menu-button').addEventListener( 'click', e => $fastview.hidden() )
+
+            $('.fastview-slick-list').slick({
+                dots: true,
+                infinite: false,
+                nextArrow: `<button type="button" class="slick-next"><img src="${PAGE_URL}/assets/img/Icon/Dark/next.svg" alt="Next"></button>`,
+                prevArrow: `<button type="button" class="slick-prev"><img src="${PAGE_URL}/assets/img/Icon/Dark/prev.svg" alt="Prev"></button>`,
+                responsive: [{}]
+            });
             // *************************** Then Block
         } )
         .catch( reject => {
@@ -60,12 +89,10 @@ document.addEventListener( 'DOMContentLoaded', event => {
 
 
 function fastview( $element ){
-    let closer = document.getElementById('close-fastview-menu-button')
     let container = $element.querySelector( '.fastview__container' )
     let preloader = $element.querySelector( '.preloader' )
     return {
         element: $element,
-        closer: closer,
         load(){
             // *************************** Load
             css( $element, {
