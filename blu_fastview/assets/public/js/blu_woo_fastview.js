@@ -26,22 +26,27 @@ document.addEventListener( 'DOMContentLoaded', event => {
 
 
         // Send Request
-        subscribeSendRequest({
+        fastviewSendRequest( {
             method: 'GET',
-            url,                            // Ajax URL
+            url,
             action: 'blu_fastview',
             data: {
-                product_id,                 // Product ID
+                product_id
+            },
+            onloadstart_callback(){
+                
             }
-        }).then(resolve => {
+        } )
+        .then( resolve => {
             // *************************** Then Block
-            console.log( resolve )
+            
             // *************************** Then Block
-        }).catch(reject => {
+        } )
+        .catch( reject => {
             // *************************** Catch Block
 
             // *************************** Catch Block
-        })
+        } )
 
     }
 

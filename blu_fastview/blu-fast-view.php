@@ -26,9 +26,11 @@ function blu_add_scripts_FV(){
     //-----------------------------------------------------------------------------------------------------------------------------
 
     // Register Scripts
+    wp_register_script( 'blu_woo_fastview_functions', plugins_url( 'assets/public/js/blu_woo_fastview_functions.js', __FILE__ ) );
     wp_register_script( 'blu_woo_fastview', plugins_url( 'assets/public/js/blu_woo_fastview.js', __FILE__ ) );
 
     // Activation Scripts
+    wp_enqueue_script( 'blu_woo_fastview_functions' );
     wp_enqueue_script( 'blu_woo_fastview' );
 }
 add_action( 'wp_footer', 'blu_add_scripts_FV' );
@@ -38,32 +40,7 @@ add_action( 'wp_footer', 'blu_add_scripts_FV' );
 
 
 /********************  Ajax  **************************/
-function blu_ajax_fastview(){
-
-    $data = $_GET;
-
-    $product_id = $data['product_id'];
-
-    $product = wc_get_product( $product_id );
-
-    if( $product->is_type('variable') ){
-        $woo_product_variation = $product->get_available_variations();
-    }
-
-    print_r( $product );
-    print_r( $woo_product_variation );
-
-    $product_data = array(
-        'title' => '',
-        'price' => '',
-        'description' => '',
-
-    );
-
-    die();
-}
-add_action( 'wp_ajax_blu_fastview', 'blu_ajax_fastview' );
-add_action( 'wp_ajax_nopriv_blu_fastview', 'blu_ajax_fastview' );
+require_once 'blu-fast-view-ajax.php';
 
 
 
