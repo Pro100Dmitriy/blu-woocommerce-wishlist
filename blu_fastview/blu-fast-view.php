@@ -20,7 +20,7 @@ if( ! class_exists( 'BluFastView' ) ){
             
             // Summery
             add_action( 'bfv_product_summery', 'woocommerce_template_single_title', 5 );
-            add_action( 'bfv_product_summery', 'woocommerce_template_single_rating', 10 );
+            //add_action( 'bfv_product_summery', 'woocommerce_template_single_rating', 10 );
             add_action( 'bfv_product_summery', 'woocommerce_template_single_price', 15 );
             //add_action( 'bfv_product_summery', 'woocommerce_template_single_excerpt', 20 );
             add_action( 'bfv_product_summery', 'woocommerce_template_single_meta', 25 );
@@ -83,11 +83,45 @@ if( ! class_exists( 'BluFastView' ) ){
                 $thumb_ids = $product->get_gallery_image_ids();
             }
 
+            if(  $product->is_type( 'variable' ) ){
+                $variations = $product->get_available_variations();
+                $variations_IMG = array();
+            
+                foreach($variations as $variant){
+                    $var = array(
+                        'id' => $variant['attributes']['attribute_czvet'],
+                        'src' => $variant['image']['src'],
+                        'data-src' => $variant['image']['url'],
+                        'data-large_image' => $variant['image']['full_src'],
+                        'srcset' => $variant['image']['srcset'],
+                        //'data-thumb' => $variant['image']['gallery_thumbnail_src'],
+                    );
+                    array_push( $variations_IMG, $var );
+                }
+            
+                //print_r($variations_IMG);
+
+                //wp_localize_script( 'blueins-scripts', 'BFV_img_variation_src', $variations_IMG );
+            }
+
             if( $product ){
                 $post = get_post( $product_id );
                 setup_postdata( $post );
                 ?>
-                    <div  class="fastview__container__slider">
+                    <div class="fastview__container__slider">
+                        <div class="fastview__src_variation">
+                            <?php
+                            foreach( $variations_IMG as $image ){
+                                ?>
+                                <span   data-id="<?php echo $image['id']; ?>" 
+                                        src="<?php echo $image['src'] ?>" 
+                                        data-src="<?php echo $image['data-src'] ?>" 
+                                        data-large_image="<?php echo $image['data-large_image'] ?>" 
+                                        srcset="<?php echo $image['srcset'] ?>"></span>
+                                <?php
+                            }
+                            ?>
+                        </div>
                         <div class="fastview-slick-list">
                             <?php
 
@@ -112,6 +146,7 @@ if( ! class_exists( 'BluFastView' ) ){
         
             die();
         }
+        
     }
 
     new BluFastView();
