@@ -46,10 +46,12 @@ if( ! class_exists( 'BluFastView' ) ){
         
             // Register Scripts
             wp_register_script( 'blu_woo_fastview_functions', plugins_url( 'assets/public/js/blu_woo_fastview_functions.js', __FILE__ ) );
+            wp_register_script( 'blueins-variation-class', plugins_url( 'assets/public/js/blueins-variation-class.js', __FILE__ ) );
             wp_register_script( 'blu_woo_fastview', plugins_url( 'assets/public/js/blu_woo_fastview.js', __FILE__ ) );
         
             // Activation Scripts
             wp_enqueue_script( 'blu_woo_fastview_functions' );
+            wp_enqueue_script( 'blueins-variation-class' );
             wp_enqueue_script( 'blu_woo_fastview' );
         }
 
@@ -89,7 +91,7 @@ if( ! class_exists( 'BluFastView' ) ){
             
                 foreach($variations as $variant){
                     $var = array(
-                        'id' => $variant['attributes']['attribute_czvet'],
+                        'id' => $variant['attributes']['attribute_czvet'] ?? $variant['attributes']['attribute_pa_czvet'],
                         'src' => $variant['image']['src'],
                         'data-src' => $variant['image']['url'],
                         'data-large_image' => $variant['image']['full_src'],
@@ -100,7 +102,6 @@ if( ! class_exists( 'BluFastView' ) ){
                 }
             
                 //print_r($variations_IMG);
-
                 //wp_localize_script( 'blueins-scripts', 'BFV_img_variation_src', $variations_IMG );
             }
 

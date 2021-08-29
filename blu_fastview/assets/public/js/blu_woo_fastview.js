@@ -73,7 +73,19 @@ document.addEventListener( 'DOMContentLoaded', event => {
                 responsive: [{}]
             });
 
-            productVariation( $fastview.element )
+            //productVariation( $fastview.element )
+            const BFV_variation = new BFV_Blueins_Variation({
+                space: 'fastview',
+                colorPaContainerId: 'setElementHere__pa_czvet',
+                colorPaNameContainerId: 'setNameHere__pa_czvet',
+                razmerPaContainerId: 'setElementHere__pa_razmer',
+                razmerPaNameContainerId: 'setNameHere__pa_razmer',
+                colorContainerId: 'setElementHere__czvet',
+                colorNameContainerId: 'setNameHere__czvet',
+                razmerContainerId: 'setElementHere__razmer',
+                razmerNameContainerId: 'setNameHere__razmer',
+                jquery: $
+            })
             // *************************** Then Block
         } )
         .catch( reject => {
