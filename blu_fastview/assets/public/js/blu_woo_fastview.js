@@ -73,7 +73,6 @@ document.addEventListener( 'DOMContentLoaded', event => {
                 responsive: [{}]
             });
 
-            //productVariation( $fastview.element )
             const BFV_variation = new BFV_Blueins_Variation({
                 space: 'fastview',
                 colorPaContainerId: 'setElementHere__pa_czvet',
@@ -86,6 +85,8 @@ document.addEventListener( 'DOMContentLoaded', event => {
                 razmerNameContainerId: 'setNameHere__razmer',
                 jquery: $
             })
+
+            bfv_quantity( $fastview.element )
             // *************************** Then Block
         } )
         .catch( reject => {
@@ -168,6 +169,49 @@ function fastview( $element ){
         }
     }
 }
+
+
+/**
+ * ************************ Quantity ************************
+ */
+
+function bfv_quantity( space ){
+
+    // Minus
+    let allMinusButtons = space.querySelector('.el-quantity__minus')
+  
+    allMinusButtons.addEventListener( 'click', option => {
+        option.preventDefault()
+
+        let parentNodeElement = allMinusButtons.parentNode
+        let input = parentNodeElement.querySelector('#quantity')
+        let inputValue = parseInt( input.value )
+
+        if( inputValue <= 1 ){
+            input.setAttribute('value', 1);
+        }else{
+            input.setAttribute('value', inputValue - 1);
+        }
+    } )
+  
+    // Plus
+    let allPlusButtons = document.querySelector('.el-quantity__plus')
+  
+    allPlusButtons.addEventListener( 'click', option => {
+        option.preventDefault()
+
+        let parentNodeElement = allPlusButtons.parentNode
+        let input = parentNodeElement.querySelector('#quantity')
+        let inputValue = parseInt( input.value )
+
+        input.setAttribute('value', inputValue + 1)
+    } )
+  
+}
+
+/**
+ * ************************ Quantity ************************
+ */
 
 
 

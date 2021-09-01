@@ -43,6 +43,8 @@ class BFV_Blueins_Variation{
         let colors = this.createCircle( optionsPaCzvet, container )
         this.renderHTML( colors.first, optionsPaCzvet, selectPaCzvet, colors.list, nameContainer )
     
+        this.updateIMG( colors.list[0] )
+
         colors.list.forEach( color => color.addEventListener( 'click', (e) => {
             e.preventDefault()
             let targetElId = e.target
@@ -151,53 +153,34 @@ class BFV_Blueins_Variation{
                         'src': child.getAttribute('src'),
                         'data-src': child.getAttribute('data-src'),
                         'data-large_image': child.getAttribute('data-large_image'),
-                        'srcset': child.getAttribute('srcset')
+                        'srcset': child.getAttribute('srcset'),
+                        'price_html': child.getAttribute('price_html'),
+                        'availability_html': child.getAttribute('availability_html')
                     }
                 }
             } )
         }
-        // if( img_variation_src ){
-        //     if( targetEl.getAttribute('id').indexOf('#') ){
-        //         img_variation_src.forEach( item => {
-        //             let harpIdex = item['id'].indexOf('#')
-        //             if( item['id'].slice( harpIdex ) == targetEl.getAttribute('id') ){
-        //                 activeID = item
-        //             }
-        //         })
-        //     }else{
-        //         img_variation_src.forEach( item => {
-        //             if( item['id'] == targetEl.getAttribute('data-value') ){
-        //                 activeID = item
-        //             }
-        //         })     
-        //     }
-        // }
 
         let variation_slider = this.space.querySelector('.slick-item:first-child')
-        //let firstElement = variation_slider.children[0]
-        //let firstURL = firstElement.children[0]
         let firstIMG = variation_slider.querySelector('img')
-
-        //let variation_control_nav = document.querySelector('.flex-control-nav')
-        // let variation_control_nav = this.space.querySelector('.slick-track')
-        // console.log(variation_control_nav)
-        // variation_control_nav.style = 'opacity: 1; width: 1500px; transform: translate3d(-1000px, 0px, 0px);'
-        // css(variation_control_nav, {
-        //     opacity: 1,
-        //     width: '1500px',
-        //     transform: 'translate3d(0px, 0px, 0px);'
-        // })
-        //let controlFirst_IMG = variation_control_nav.children[0].children[0]
-
-        //firstElement.setAttribute('data-thumb', activeID['data-thumb'])
-        //firstURL.setAttribute('href', activeID['data-src'])
+        let details = this.space.querySelector('.bfv-details-price')
+        let template = `
+            <div class="woocommerce-variation single_variation">
+                <div class="woocommerce-variation-price">
+                    ${activeID['price_html']}
+                </div>
+                <div class="woocommerce-variation-availability available_quantity">
+                    ${ activeID['availability_html'] }
+                </div>
+            </div>
+        `
 
         firstIMG.setAttribute('src', activeID['src'])
         firstIMG.setAttribute('data-src', activeID['data-src'])
         firstIMG.setAttribute('data-large_image', activeID['data-large_image'])
         firstIMG.setAttribute('srcset', activeID['srcset'])
 
-        //controlFirst_IMG.setAttribute('src', activeID['data-thumb'])
+        details.innerHTML = template
     }
 }
 

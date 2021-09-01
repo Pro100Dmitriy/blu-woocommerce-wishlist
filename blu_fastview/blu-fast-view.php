@@ -96,13 +96,15 @@ if( ! class_exists( 'BluFastView' ) ){
                         'data-src' => $variant['image']['url'],
                         'data-large_image' => $variant['image']['full_src'],
                         'srcset' => $variant['image']['srcset'],
+                        'price_html' => $variant['price_html'],
+                        'availability_html' => $variant['availability_html']
                         //'data-thumb' => $variant['image']['gallery_thumbnail_src'],
                     );
                     array_push( $variations_IMG, $var );
                 }
-            
-                //print_r($variations_IMG);
-                //wp_localize_script( 'blueins-scripts', 'BFV_img_variation_src', $variations_IMG );
+
+                //print_r( $variations[0] );
+
             }
 
             if( $product ){
@@ -112,13 +114,15 @@ if( ! class_exists( 'BluFastView' ) ){
                     <div class="fastview__container__slider">
                         <div class="fastview__src_variation">
                             <?php
-                            foreach( $variations_IMG as $image ){
+                            foreach( $variations_IMG as $data ){
                                 ?>
-                                <span   data-id="<?php echo $image['id']; ?>" 
-                                        src="<?php echo $image['src'] ?>" 
-                                        data-src="<?php echo $image['data-src'] ?>" 
-                                        data-large_image="<?php echo $image['data-large_image'] ?>" 
-                                        srcset="<?php echo $image['srcset'] ?>"></span>
+                                <span   data-id="<?php echo $data['id']; ?>" 
+                                        src="<?php echo $data['src'] ?>" 
+                                        data-src="<?php echo $data['data-src'] ?>" 
+                                        data-large_image="<?php echo $data['data-large_image'] ?>" 
+                                        srcset="<?php echo $data['srcset'] ?>"
+                                        price_html='<?php echo $data['price_html'] ?>'
+                                        availability_html='<?php echo $data['availability_html'] ?>'></span>
                                 <?php
                             }
                             ?>
