@@ -155,7 +155,8 @@ class BFV_Blueins_Variation{
                         'data-large_image': child.getAttribute('data-large_image'),
                         'srcset': child.getAttribute('srcset'),
                         'price_html': child.getAttribute('price_html'),
-                        'availability_html': child.getAttribute('availability_html')
+                        'availability_html': child.getAttribute('availability_html'),
+                        'variaction_id': child.getAttribute('variaction_id')
                     }
                 }
             } )
@@ -179,6 +180,7 @@ class BFV_Blueins_Variation{
         firstIMG.setAttribute('data-src', activeID['data-src'])
         firstIMG.setAttribute('data-large_image', activeID['data-large_image'])
         firstIMG.setAttribute('srcset', activeID['srcset'])
+        this.space.querySelector('input[name="variation_id"]').value = activeID['variaction_id']
 
         details.innerHTML = template
     }

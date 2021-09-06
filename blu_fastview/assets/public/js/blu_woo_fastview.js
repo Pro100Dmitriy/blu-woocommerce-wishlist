@@ -5,6 +5,7 @@
  */
 
 const PAGE_URL = global_params.url
+const AJAX_URL = woocommerce_params.ajax_url
 
 
 document.addEventListener( 'DOMContentLoaded', event => {
@@ -87,6 +88,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
             })
 
             bfv_quantity( $fastview.element )
+            bfv_ajax_add_to_cart( $fastview.element )
             // *************************** Then Block
         } )
         .catch( reject => {
@@ -216,186 +218,105 @@ function bfv_quantity( space ){
 
 
 /**
- * ************************ Vaiable Colors Start ************************
+ * ************************ Add To Cart (Fast View) ************************
  */
 
-function updateHTML( circleEl, childrenArr, optionsWoo, circle, nameHere, space ){
+function bfv_ajax_add_to_cart( space ){
+    let button_fast_view = space.querySelector('.single_add_to_cart_button')
 
-    for( let i=0; i < circle.length; i++ ){
-        circle[i].classList.remove('element-select'); 
-    }
-    circleEl.classList.add('element-select');
+    if( button_fast_view ){
 
-    let circleElId = circleEl.getAttribute('id');
+        button_fast_view.addEventListener('click', addToCartSingle)
 
-    let fullval = childrenArr.map( opt => {
-        if( opt.value.slice( opt.value.indexOf('#') ) == circleElId ){
-        return opt.value;
-        }
-    } );
+        function addToCartSingle(event){
+            event.preventDefault()
 
-    fullval = fullval.filter( optVal => {if( optVal != undefined ) return optVal } );
-    $( optionsWoo ).val(fullval[0]).change();
+            let action = 'blueins_cart_add_single'                                                                                                                                                                          // Action
+            let product_id = space.querySelector('input[name="product_id"]') ? space.querySelector('input[name="product_id"]').value : space.querySelector('.single_add_to_cart_button').value                     // Product ID
+            let product_qty = space.querySelector('#quantity').value ? space.querySelector('#quantity').value : 1                                                                                                     // Product Quantity
+            let variaction_id = space.querySelector('input[name="variation_id"]') ? space.querySelector('input[name="variation_id"]').value : ''                                                                      // Variaction ID
+            let color = space.querySelector('#czvet') ? space.querySelector('#czvet').value.replace(' #', '_') : ''                                                                                                   // Color
+            let size = space.querySelector('#razmer') ? space.querySelector('#razmer').value.replace(' #', '_') : ''                                                                                                  // Size
 
-    // Set Name Color
-    let nameContainer = space.querySelector( `#${nameHere}` );
-    nameContainer.innerHTML = fullval[0].slice( 0, fullval[0].indexOf('#') );
+            let pa_color = space.querySelector('#pa_czvet') ? space.querySelector('#pa_czvet').value : ''
+            let pa_size = space.querySelector('#pa_razmer') ? space.querySelector('#pa_razmer').value : ''
 
-}
+            let preloader = `
+                <div class="preloader">
+                    <svg version="1.1" id="L5" width="60px" height="60px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                        <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
+                        <animateTransform 
+                            attributeName="transform" 
+                            dur="1s" 
+                            type="translate" 
+                            values="0 15 ; 0 -15; 0 15" 
+                            repeatCount="indefinite" 
+                            begin="0.1"/>
+                        </circle>
+                        <circle fill="#fff" stroke="none" cx="30" cy="50" r="6">
+                        <animateTransform 
+                            attributeName="transform" 
+                            dur="1s" 
+                            type="translate" 
+                            values="0 10 ; 0 -10; 0 10" 
+                            repeatCount="indefinite" 
+                            begin="0.2"/>
+                        </circle>
+                        <circle fill="#fff" stroke="none" cx="54" cy="50" r="6">
+                        <animateTransform 
+                            attributeName="transform" 
+                            dur="1s" 
+                            type="translate" 
+                            values="0 5 ; 0 -5; 0 5" 
+                            repeatCount="indefinite" 
+                            begin="0.3"/>
+                        </circle>
+                    </svg>
+                </div>
+            `
 
-function updateIMG(targetEl, space){
-    let BFV_img_variation_src = [ ...space.querySelector('.fastview__src_variation').children ]
+            if( product_id ){
 
-    let activeID
-    if( BFV_img_variation_src ){
-        BFV_img_variation_src.forEach( item => {
-            let harpIdex = item.getAttribute('data-id').indexOf('#')
-            if( item.getAttribute('data-id').slice( harpIdex ) == targetEl ){
-                activeID = item
+                fastviewSendRequest( {
+                    method: 'GET',
+                    url: AJAX_URL,
+                    action,
+                    data: {
+                        product_id,
+                        product_qty,
+                        variaction_id,
+                        color,
+                        size,
+                        pa_color,
+                        pa_size
+                    },
+                    onloadstart_callback(){
+    
+                        document.querySelector('.blueins_cart_center').insertAdjacentHTML('afterbegin', preloader)
+                        $('body').css('overflow-y','hidden');
+                        $('#cart-menu').addClass('right-ziro');
+                        $('#cart-overlay').css('visibility','visible');
+                        setTimeout(function(){
+                            $('#cart-overlay').css('background','rgba(180,197,204, 0.4)');
+                        }, 100);
+    
+                    }
+                } )
+                .then( data => document.querySelector('.blueins_cart_center').innerHTML = data )
+                .catch( error => console.log(error) )
+
+            }else{
+                //console.log(this)
+                //let event = new Event('click')
+                //this.dispatchEvent(event)
             }
-        })
-    }
-
-    let variation_slider = space.querySelector('.fastview__container__slider')
-    let firstElement = variation_slider.querySelector('.slick-track').children[0]
-    let firstIMG = firstElement.querySelector('img')
-
-    //let variation_control_nav = document.querySelector('.flex-control-nav')
-    //let controlFirst_IMG = variation_control_nav.children[0].children[0]
-
-    firstIMG.setAttribute('src', activeID.getAttribute('src') )
-    firstIMG.setAttribute('data-src', activeID.getAttribute('data-src') )
-    firstIMG.setAttribute('data-large_image', activeID.getAttribute('data-large_image') )
-    firstIMG.setAttribute('srcset', activeID.getAttribute('srcset') )
-}
-
-function createSquare( listArray, whereId, space ){
-    let arraySquare = []
-
-    listArray.forEach( (child, childIndex) => {
-        if( childIndex != 0 ){
-        let listContainer = space.querySelector( `#${whereId}` )
-
-        let liElem = document.createElement('li')
-        let spanElem = document.createElement('span')
-
-        let razmerCod = child.value.slice( child.value.indexOf('#') )
-        let razmerCodHTML = child.value.slice( child.value.indexOf('#') + 1 )
-        let razmerName = child.value.slice( 0, child.value.indexOf('#') )
-
-        spanElem.setAttribute('class', 'details-select-square')
-        spanElem.setAttribute('id', razmerCod.trim());
-        spanElem.textContent = razmerCodHTML
-
-        liElem.setAttribute('class', 'details__razmer__list__item')
-        liElem.setAttribute('name', razmerName)
-        liElem.appendChild( spanElem )
-
-        arraySquare.push( spanElem )
-        listContainer.appendChild( liElem )
+            
         }
-    } )
-
-    return arraySquare;
-}
-
-function createCircle( listArray, whereId, space ){
-    let arratCircle = [];
-
-    listArray.forEach( (child, childIndex, childArray)=>{
-
-        if( childIndex != 0 ){
-        let listContainer = space.querySelector( `#${whereId}` );
-
-        let liElem = document.createElement('li');
-        let spanElem = document.createElement('span');
-
-        // Fint Color #Cod
-        let colorCod = child.value.slice( child.value.indexOf('#') );
-        let colorName = child.value.slice( 0, child.value.indexOf('#') );
-
-        spanElem.setAttribute('class', 'details-select-circle');
-        spanElem.setAttribute('style', `background: ${ colorCod.trim() }`);
-        spanElem.setAttribute('id', colorCod.trim());
-
-        liElem.setAttribute('class', 'details__colors__list__item');
-        liElem.setAttribute('name', colorName);
-        liElem.appendChild( spanElem );
-
-        arratCircle.push( spanElem );
-        listContainer.appendChild( liElem );
-        }
-        
-    } );
-
-    return arratCircle;
-}
-
-function productVariation( space ){
-
-    let optionsProductCzvet = space.querySelector('[data-attribute_name="attribute_czvet"]')
-    let optionsProductRazmer = space.querySelector('[data-attribute_name="attribute_razmer"]')
-    let optionsProductPaRazmer = space.querySelector('[data-attribute_name="attribute_pa_razmer"]')
-
-    if( optionsProductCzvet ){
-
-        let childrenCzvet = [ ...optionsProductCzvet.children ]
-        
-        let circleCzvet = createCircle( childrenCzvet, 'setElementHere__czvet', space )
-        
-        updateHTML( circleCzvet[0], childrenCzvet, optionsProductCzvet, circleCzvet, 'setNameHere__czvet', space )
-
-        circleCzvet.forEach( circleEl => {
-            circleEl.addEventListener('click', (event)=>{
-                event.preventDefault();
-                let targetEl = event.target.getAttribute('id')
-
-                updateHTML( circleEl, childrenCzvet, optionsProductCzvet, circleCzvet, 'setNameHere__czvet', space );
-                updateIMG( targetEl, space );
-
-            })
-        })
 
     }
-    if( optionsProductRazmer ){
-
-        let childrenRazmer = [ ...optionsProductRazmer.children ]
-
-        let squareRazmer = createSquare( childrenRazmer, 'setElementHere__razmer', space )
-
-        updateHTML( squareRazmer[0], childrenRazmer, optionsProductRazmer, squareRazmer, 'setNameHere__razmer', space )
-
-        squareRazmer.forEach( circleEl => {
-        circleEl.addEventListener('click', (event)=>{
-            event.preventDefault();
-
-            updateHTML( circleEl, childrenRazmer, optionsProductRazmer, squareRazmer, 'setNameHere__razmer', space );
-
-        })
-        })
-
-    }
-    if( optionsProductPaRazmer ){
-
-        let childrenRazmer = [ ...optionsProductPaRazmer.children ]
-
-        let squareRazmer = createSquare( childrenRazmer, 'setElementHere__pa_razmer', space )
-
-        updateHTML( squareRazmer[0], childrenRazmer, optionsProductPaRazmer, squareRazmer, 'setNameHere__pa_razmer', space )
-
-        squareRazmer.forEach( circleEl => {
-        circleEl.addEventListener('click', (event)=>{
-            event.preventDefault();
-
-            updateHTML( circleEl, childrenRazmer, optionsProductPaRazmer, squareRazmer, 'setNameHere__pa_razmer', space );
-
-        })
-        })
-
-    }
-
 }
-
+    
 /**
- * ************************ Vaiable Colors End ************************
+ * ************************ Add To Cart (Fast View) ************************
  */

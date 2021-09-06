@@ -97,7 +97,8 @@ if( ! class_exists( 'BluFastView' ) ){
                         'data-large_image' => $variant['image']['full_src'],
                         'srcset' => $variant['image']['srcset'],
                         'price_html' => $variant['price_html'],
-                        'availability_html' => $variant['availability_html']
+                        'availability_html' => $variant['availability_html'],
+                        'variaction_id' => $variant['variation_id'],
                         //'data-thumb' => $variant['image']['gallery_thumbnail_src'],
                     );
                     array_push( $variations_IMG, $var );
@@ -122,7 +123,8 @@ if( ! class_exists( 'BluFastView' ) ){
                                         data-large_image="<?php echo $data['data-large_image'] ?>" 
                                         srcset="<?php echo $data['srcset'] ?>"
                                         price_html='<?php echo $data['price_html'] ?>'
-                                        availability_html='<?php echo $data['availability_html'] ?>'></span>
+                                        availability_html='<?php echo $data['availability_html'] ?>'
+                                        variaction_id='<?php echo $data['variaction_id'] ?>'></span>
                                 <?php
                             }
                             ?>
