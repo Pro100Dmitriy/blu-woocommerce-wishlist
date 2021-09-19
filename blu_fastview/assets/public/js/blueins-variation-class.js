@@ -155,12 +155,31 @@ class BFV_Blueins_Variation{
                         'data-large_image': child.getAttribute('data-large_image'),
                         'srcset': child.getAttribute('srcset'),
                         'price_html': child.getAttribute('price_html'),
+                        'price_regular': child.getAttribute('price_regular'),
                         'availability_html': child.getAttribute('availability_html'),
                         'variaction_id': child.getAttribute('variaction_id')
                     }
                 }
             } )
         }
+
+        console.log(activeID['price_html'])
+        if( activeID['price_html'] == '' ){
+            activeID['price_html'] = `
+                <span class="price">
+                    <ins>
+                        <span class="woocommerce-Price-amount amount">
+                            <bdi>
+                                <span class="woocommerce-Price-currencySymbol">Br</span>
+                                ${activeID['price_regular']}
+                            </bdi>
+                        </span>
+                    </ins>
+                </span>
+            `
+        }
+        console.log(activeID['price_html'])
+
 
         let variation_slider = this.space.querySelector('.slick-item:first-child')
         let firstIMG = variation_slider.querySelector('img')
