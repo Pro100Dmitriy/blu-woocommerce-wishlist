@@ -163,7 +163,6 @@ class BFV_Blueins_Variation{
             } )
         }
 
-        console.log(activeID['price_html'])
         if( activeID['price_html'] == '' ){
             activeID['price_html'] = `
                 <span class="price">
@@ -178,8 +177,6 @@ class BFV_Blueins_Variation{
                 </span>
             `
         }
-        console.log(activeID['price_html'])
-
 
         let variation_slider = this.space.querySelector('.slick-item:first-child')
         let firstIMG = variation_slider.querySelector('img')

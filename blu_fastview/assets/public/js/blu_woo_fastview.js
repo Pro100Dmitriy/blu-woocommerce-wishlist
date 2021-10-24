@@ -4,6 +4,7 @@
  * 
  */
 
+
 const PAGE_URL = global_params.url
 const AJAX_URL = woocommerce_params.ajax_url
 
@@ -47,7 +48,6 @@ document.addEventListener( 'DOMContentLoaded', event => {
         let url = woocommerce_params.ajax_url                                                                                           // Ajax URL
         let product_id = $target.getAttribute('data-blu-product-id') ? $target.getAttribute('data-blu-product-id') : false;             // Product ID
 
-
         // Send Request
         fastviewSendRequest( {
             method: 'GET',
@@ -86,6 +86,9 @@ document.addEventListener( 'DOMContentLoaded', event => {
                 razmerNameContainerId: 'setNameHere__razmer',
                 jquery: $
             })
+
+            //let content = $fastview.element.querySelector('.fastview__container__content')
+            //content.addEventListener('touchmove', scroll)
 
             bfv_quantity( $fastview.element )
             bfv_ajax_add_to_cart( $fastview.element )
@@ -171,6 +174,29 @@ function fastview( $element ){
         }
     }
 }
+
+
+
+/**
+ * ************************ Scroll Animation ************************
+ */
+
+ function scroll(e){
+    let content = document.querySelector('.fastview__container__content')
+    let scroll = e.changeTouches.clientY
+
+    //console.log(scroll)
+    //console.log(e)
+
+    css( e.target, {
+        height: `calc( 50% + ${scroll}px )`
+    } )
+}
+
+/**
+ * ************************ Scroll Animation ************************
+ */
+
 
 
 /**

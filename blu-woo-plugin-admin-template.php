@@ -13,7 +13,7 @@ function blu_woo_register_option(){
     // First Section
     add_settings_section( 'blu_theme_options_notifications', 'Настройка уведомлений.', '', 'blu_woocommerce_wishlist_options' );
 
-    add_settings_field( 'blu_theme_options_notifications__seved', 'Успешное сохранение', 'blu_notification_seved_html', 'blu_woocommerce_wishlist_options', 'blu_theme_options_notifications', array('label_for' => 'blu_theme_options_notifications__seccess') );
+    add_settings_field( 'blu_theme_options_notifications__seved', 'Успешное сохранение', 'blu_notification_seved_html', 'blu_woocommerce_wishlist_options', 'blu_theme_options_notifications', array('label_for' => 'blu_theme_options_notifications__seved') );
     add_settings_field( 'blu_theme_options_notifications__remove', 'Успешное удаление', 'blu_notification_remove_html', 'blu_woocommerce_wishlist_options', 'blu_theme_options_notifications', array('label_for' => 'blu_theme_options_notifications__remove') );
     add_settings_field( 'blu_theme_options_notifications__add_to_cart', 'Успешное добавление в корзину', 'blu_notification_add_to_cart_html', 'blu_woocommerce_wishlist_options', 'blu_theme_options_notifications', array('label_for' => 'blu_theme_options_notifications__add_to_cart') );
     add_settings_field( 'blu_theme_options_notifications__err_seved', 'Ошибка при сохранении', 'blu_notification_err_seved_html', 'blu_woocommerce_wishlist_options', 'blu_theme_options_notifications', array('label_for' => 'blu_theme_options_notifications__err_seved') );

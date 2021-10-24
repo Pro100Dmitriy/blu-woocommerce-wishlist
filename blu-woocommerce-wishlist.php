@@ -169,5 +169,12 @@ require_once 'blu_fastview/blu-fast-view.php';
 
 
 
+/********************  Plugin Blueins Canvas Product  **************************/
+require_once 'blu_canvasproduct/blu-canvas-product.php';
+
+
+
+
+
 /********************  Customizer  **************************/
 require_once 'blu-woo-customizer.php';
