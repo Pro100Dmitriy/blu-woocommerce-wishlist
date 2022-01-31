@@ -215,7 +215,7 @@ html {
   transition: all 0.5s ease;
 }
 .plugin-container__title h1 {
-  font-family: PlayfairDisplay;
+  font-family: Jost;
   font-weight: 400;
   font-size: 3.5rem;
   color: white;
@@ -306,3 +306,29 @@ html {
 }
 
 /*# sourceMappingURL=/main.cea5deef.css.map */
+
+@media screen and (max-width: 900px){
+  .plugin-container{
+    width: calc( 468px / 9 * 16 );
+    height: 100%;
+  }
+  .plugin-container #main_svg {
+    display: none;
+  }
+  .plugin-container #overlay_svg {
+    display: none;
+  }
+  .plugin-container__img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 450px){
+  .plugin-container__title {
+    width: 100vw;
+  }
+  .plugin-container__title__list {
+    flex-wrap: wrap;
+  }
+}

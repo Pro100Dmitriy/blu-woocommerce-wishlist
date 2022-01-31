@@ -78,9 +78,11 @@ function svghover( $container, { main_svg_ID, overflow_svg_ID, img_ID }, prod_da
 
 }
 
-
-svghover( document.querySelector('.plugin-container'), {
-    main_svg_ID: '#main_svg',
-    overflow_svg_ID: '#overlay_svg',
-    img_ID: '#plugin-img'
-}, product_data )
+const container = document.querySelector('.plugin-container') ?? false
+if( container ){
+    svghover( container, {
+        main_svg_ID: '#main_svg',
+        overflow_svg_ID: '#overlay_svg',
+        img_ID: '#plugin-img'
+    }, product_data )
+}
